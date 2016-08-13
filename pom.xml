@@ -8,6 +8,7 @@
     <scala.version>2.10.6</scala.version>
     <jdk.version>1.8</jdk.version>
     <hadoop.version>2.7.2</hadoop.version>
+    <skipTests>true</skipTests>
   </properties>
 
   <repositories>
