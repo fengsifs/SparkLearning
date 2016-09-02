@@ -18,17 +18,21 @@ object Reliability {
 //    val aircraft = sc.textFile(args(0)).
 //    val delay = sc.textFile(args(1)).
     val aircrafttype = sc.textFile("/user/root/input/aircrafttype1000.csv").
-      map(line => line.split(','))
+      map(line => line.split(',')).
+      map(x => (x(0).toInt, x(2).toInt)).
+      lookup(532)
 
     val aircraft = sc.textFile("/user/root/input/aircraft1000.csv").
       map(line => line.split(',')).
       filter(_(0).equals("1")).
+      filter(x => aircrafttype.contains(x(2).toInt)).
       map(x => (x(1).toInt, x(2).toDouble)).
       reduceByKey(_+_)
 
     val delay = sc.textFile("/user/root/input/delay1000.csv").
       map(line => line.split(',')).
       filter(_(0).equals("1")).
+      filter(x => aircrafttype.contains(x(3).toInt)).
       map(x => (x(1).toInt, 1)).
       reduceByKey(_+_)
 
