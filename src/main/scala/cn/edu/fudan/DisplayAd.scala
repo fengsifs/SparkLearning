@@ -1,10 +1,10 @@
 package cn.edu.fudan
 
-import org.apache.spark.ml.{Pipeline, PipelineStage}
+import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.feature._
-import org.apache.spark.sql.{Row, SQLContext}
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
+import org.apache.spark.sql.{Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -59,8 +59,7 @@ object DisplayAd {
     val logModel = new LogisticRegression().setMaxIter(500).setRegParam(0.1).setElasticNetParam(0.0).
       setFeaturesCol("vectorFeature").setLabelCol("label")
 
-    val pipelineStage: Array[PipelineStage] = Array(cat1, cat2, cat1E, cat2E, vectorAssembler, logModel)
-    val pipeline = new Pipeline().setStages(pipelineStage)
+    val pipeline = new Pipeline().setStages(Array(cat1, cat2, cat1E, cat2E, vectorAssembler, logModel))
     val pModel = pipeline.fit(dfTrain)
 
     val output = pModel.transform(dfTest).select("vectorFeature", "label", "prediction", "rawPrediction", "probability")

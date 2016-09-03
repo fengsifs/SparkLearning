@@ -78,6 +78,7 @@
       <groupId>com.cloudera.sparkts</groupId>
       <artifactId>sparkts</artifactId>
       <version>0.3.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
