@@ -13,10 +13,11 @@ import org.apache.spark.{SparkConf, SparkContext}
 object DisplayAd {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("spark://master:7077").setAppName("DisplayAd")
+      .setJars(Array("/target/SparkLearning-1.0-SNAPSHOT.jar"))
     val sc = new SparkContext(conf)
     val sqlContext = new SQLContext(sc)
 
-    val rows = sc.textFile("/user/root/input/dac_sample.txt").
+    val rows = sc.textFile("hdfs://master:9000/user/root/input/dac_sample.txt").
       map(line => line.split("\t")).
       map(x => Row(x(0).toDouble, x(2), x(14), x(15)))
 
@@ -71,6 +72,5 @@ object DisplayAd {
     println(correct)
     println(total)
 
-    rows.take(10)
   }
 }

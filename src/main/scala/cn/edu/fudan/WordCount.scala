@@ -7,18 +7,16 @@ import org.apache.spark.{SparkConf, SparkContext}
   */
 object WordCount {
   def main(args: Array[String]): Unit = {
-    if (args.length != 2) {
-      println("wrong input, please input the input path and the output path")
-      System.exit(1)
-    }
     val conf = new SparkConf().setAppName("WordCount").setMaster("spark://master:7077")
+      .setJars(Array("/target/SparkLearning-1.0-SNAPSHOT.jar"))
     val sc = new SparkContext(conf)
-    val text = sc.textFile(args(0)).
+    val text = sc.textFile("hdfs://master:9000/user/root/input/bn.txt").
       flatMap(line => line.split(" ")).
       map(word => (word, 1)).
       reduceByKey(_+_)
 
-    text.saveAsTextFile(args(1))
+    val a = text.count()
+    println(a)
 
   }
 }
